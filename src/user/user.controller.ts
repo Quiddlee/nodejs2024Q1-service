@@ -5,6 +5,8 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   ParseUUIDPipe,
@@ -68,6 +70,7 @@ export class UserController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     const user = this.userService.remove(id);
 
