@@ -8,6 +8,8 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,6 +20,7 @@ import { errorMessage } from '../lib/const/const';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -36,6 +39,7 @@ export class UserController {
     return user;
   }
 
+  @UsePipes(new ValidationPipe())
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
