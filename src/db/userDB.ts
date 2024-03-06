@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-
 import { User } from '../user/entities/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
@@ -8,16 +6,8 @@ type UsersTable = {
   [id: string]: User;
 };
 
-class UserDB {
-  private static readonly instance: UserDB = new UserDB();
-
+export class UserDB {
   private userTable: UsersTable = {};
-
-  private constructor() {}
-
-  static getInstance() {
-    return UserDB.instance;
-  }
 
   findById(id: string) {
     return this.userTable[id];
@@ -53,5 +43,3 @@ class UserDB {
     return user;
   }
 }
-
-export default UserDB.getInstance();
