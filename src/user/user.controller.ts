@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -21,17 +23,20 @@ import { errorMessage } from '../lib/const/const';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     const user = this.userService.findOne(id);
@@ -40,6 +45,7 @@ export class UserController {
     return user;
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Patch(':id')
   update(
@@ -52,6 +58,7 @@ export class UserController {
     return updatedUser;
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     const user = this.userService.remove(id);

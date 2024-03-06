@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import * as uuid from 'uuid';
 
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -11,10 +12,12 @@ export class User {
 
   public updatedAt: number;
 
-  constructor(
-    public login: string,
-    public password: string,
-  ) {
+  @Exclude()
+  public password: string;
+
+  public login: string;
+
+  constructor(login: string, password: string) {
     this.id = uuid.v4();
     this.login = login;
     this.password = password;
