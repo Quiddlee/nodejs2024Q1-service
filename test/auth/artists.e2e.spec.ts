@@ -1,6 +1,7 @@
-import { request } from '../lib';
-import { artistsRoutes } from '../endpoints';
 import { StatusCodes } from 'http-status-codes';
+
+import { artistsRoutes } from '../endpoints';
+import { request } from '../lib';
 
 const createArtistDto = {
   name: 'TEST_artist',

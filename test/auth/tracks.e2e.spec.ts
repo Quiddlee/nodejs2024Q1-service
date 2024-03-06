@@ -1,6 +1,7 @@
-import { request } from '../lib';
 import { StatusCodes } from 'http-status-codes';
+
 import { tracksRoutes } from '../endpoints';
+import { request } from '../lib';
 
 const createTrackDto = {
   name: 'TEST_TRACK',

@@ -1,16 +1,17 @@
-import { request } from './lib';
 import { StatusCodes } from 'http-status-codes';
-import {
-  getTokenAndUserId,
-  shouldAuthorizationBeTested,
-  removeTokenUser,
-} from './utils';
+
 import {
   albumsRoutes,
   artistsRoutes,
-  tracksRoutes,
   favoritesRoutes,
+  tracksRoutes,
 } from './endpoints';
+import { request } from './lib';
+import {
+  getTokenAndUserId,
+  removeTokenUser,
+  shouldAuthorizationBeTested,
+} from './utils';
 
 const createAlbumDto = {
   name: 'TEST_ALBUM',
@@ -41,7 +42,7 @@ describe('Favorites (e2e)', () => {
   beforeAll(async () => {
     if (shouldAuthorizationBeTested) {
       const result = await getTokenAndUserId(unauthorizedRequest);
-      commonHeaders['Authorization'] = result.token;
+      commonHeaders.Authorization = result.token;
       mockUserId = result.mockUserId;
     }
   });
@@ -52,8 +53,8 @@ describe('Favorites (e2e)', () => {
       await removeTokenUser(unauthorizedRequest, mockUserId, commonHeaders);
     }
 
-    if (commonHeaders['Authorization']) {
-      delete commonHeaders['Authorization'];
+    if (commonHeaders.Authorization) {
+      delete commonHeaders.Authorization;
     }
   });
 

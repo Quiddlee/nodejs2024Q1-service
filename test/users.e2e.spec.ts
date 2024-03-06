@@ -1,12 +1,13 @@
-import { validate } from 'uuid';
 import { StatusCodes } from 'http-status-codes';
+import { validate } from 'uuid';
+
+import { usersRoutes } from './endpoints';
 import { request } from './lib';
 import {
   getTokenAndUserId,
-  shouldAuthorizationBeTested,
   removeTokenUser,
+  shouldAuthorizationBeTested,
 } from './utils';
-import { usersRoutes } from './endpoints';
 
 const createUserDto = {
   login: 'TEST_LOGIN',
@@ -24,7 +25,7 @@ describe('Users (e2e)', () => {
   beforeAll(async () => {
     if (shouldAuthorizationBeTested) {
       const result = await getTokenAndUserId(unauthorizedRequest);
-      commonHeaders['Authorization'] = result.token;
+      commonHeaders.Authorization = result.token;
       mockUserId = result.mockUserId;
     }
   });
@@ -35,8 +36,8 @@ describe('Users (e2e)', () => {
       await removeTokenUser(unauthorizedRequest, mockUserId, commonHeaders);
     }
 
-    if (commonHeaders['Authorization']) {
-      delete commonHeaders['Authorization'];
+    if (commonHeaders.Authorization) {
+      delete commonHeaders.Authorization;
     }
   });
 

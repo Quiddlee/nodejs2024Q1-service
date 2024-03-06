@@ -1,14 +1,15 @@
-import request from '../lib/request';
-import { authRoutes } from '../endpoints';
-import {
-  shouldAuthorizationBeTested,
-  removeTokenUser,
-  getTokenAndUserId,
-  generateRefreshToken,
-} from '../utils';
 import { HttpStatus } from '@nestjs/common';
 import { decode, JwtPayload } from 'jsonwebtoken';
 import { validate } from 'uuid';
+
+import { authRoutes } from '../endpoints';
+import request from '../lib/request';
+import {
+  generateRefreshToken,
+  getTokenAndUserId,
+  removeTokenUser,
+  shouldAuthorizationBeTested,
+} from '../utils';
 
 type UserTokens = {
   userId: string;
@@ -54,14 +55,14 @@ describe('Refresh (e2e)', () => {
       const { accessToken, refreshToken, mockUserId, login, token } =
         await getTokenAndUserId(request);
       userTokens = { userId: mockUserId, login, accessToken, refreshToken };
-      headers['Authorization'] = token;
+      headers.Authorization = token;
     }
   });
 
   afterAll(async () => {
     if (userTokens) {
       removeTokenUser(request, userTokens.userId, headers);
-      delete headers['Authorization'];
+      delete headers.Authorization;
     }
   });
 

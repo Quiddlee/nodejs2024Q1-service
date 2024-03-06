@@ -1,6 +1,7 @@
-import { request } from '../lib';
 import { StatusCodes } from 'http-status-codes';
+
 import { usersRoutes } from '../endpoints';
+import { request } from '../lib';
 
 const createUserDto = {
   login: 'TEST_LOGIN',

@@ -1,6 +1,6 @@
-import { User } from '../user/entities/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
+import { User } from '../user/entities/user.entity';
 
 type UsersTable = {
   [id: string]: User;
