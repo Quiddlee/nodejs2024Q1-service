@@ -3,12 +3,13 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
+  Put,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -47,14 +48,21 @@ export class UserController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const updatedUser = this.userService.update(id, updateUserDto);
+    const { oldPassword } = updateUserDto;
+    const user = this.userService.findOne(id);
+    const isSamePassword = oldPassword === user.password;
 
-    if (!updatedUser) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
+    if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
+
+    if (!isSamePassword)
+      throw new ForbiddenException(errorMessage.INVALID_PASSWORD);
+
+    const updatedUser = this.userService.update(id, updateUserDto);
     return updatedUser;
   }
 

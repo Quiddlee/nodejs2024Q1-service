@@ -26,9 +26,8 @@ export class User {
     this.updatedAt = this.createdAt;
   }
 
-  update({ login, password }: UpdateUserDto) {
-    this.login = login;
-    this.password = password;
+  update({ newPassword }: UpdateUserDto) {
+    this.password = newPassword;
     this.version += 1;
     this.updatedAt = Date.now();
   }
