@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -11,6 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { errorMessage } from '../lib/const/const';
 
 @Controller('user')
 export class UserController {
@@ -28,7 +30,10 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.findOne(id);
+    const user = this.userService.findOne(id);
+
+    if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
+    return user;
   }
 
   @Patch(':id')
@@ -36,11 +41,17 @@ export class UserController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.update(id, updateUserDto);
+    const updatedUser = this.userService.update(id, updateUserDto);
+
+    if (!updatedUser) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
+    return updatedUser;
   }
 
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.remove(id);
+    const user = this.userService.remove(id);
+
+    if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
+    return user;
   }
 }

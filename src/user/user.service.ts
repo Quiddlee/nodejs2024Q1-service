@@ -22,6 +22,6 @@ export class UserService {
   }
 
   remove(id: string) {
-    userDB.delete(id);
+    return userDB.delete(id);
   }
 }

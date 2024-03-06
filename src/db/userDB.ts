@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+
 import { User } from '../user/entities/user.entity';
-import { UpdateUserDto } from '../user/dto/update-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UpdateUserDto } from '../user/dto/update-user.dto';
 
 type UsersTable = {
   [id: string]: User;
@@ -33,14 +34,22 @@ class UserDB {
   }
 
   delete(id: string) {
+    const toDeleteUser = this.userTable[id];
+
+    if (!toDeleteUser) return toDeleteUser;
+
     this.userTable = Object.fromEntries(
-      Object.entries(this.userTable).filter(([userId]) => userId !== id),
+      Object.entries(this.userTable).filter(
+        ([, user]) => user !== toDeleteUser,
+      ),
     );
+
+    return toDeleteUser;
   }
 
   update(id: string, dto: UpdateUserDto) {
     const user = this.userTable[id];
-    user.update(dto);
+    user?.update(dto);
     return user;
   }
 }
