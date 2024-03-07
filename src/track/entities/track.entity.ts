@@ -1,3 +1,5 @@
+import * as uuid from 'uuid';
+
 export class Track {
   public id: string; // uuid v4
 
@@ -15,6 +17,7 @@ export class Track {
     artistId: string | null,
     albumId: string | null,
   ) {
+    this.id = uuid.v4();
     this.name = name;
     this.duration = duration;
     this.artistId = artistId;
