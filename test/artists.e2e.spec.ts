@@ -1,13 +1,12 @@
+import { request } from './lib';
 import { StatusCodes } from 'http-status-codes';
 import { validate } from 'uuid';
-
-import { albumsRoutes, artistsRoutes, tracksRoutes } from './endpoints';
-import { request } from './lib';
 import {
   getTokenAndUserId,
-  removeTokenUser,
   shouldAuthorizationBeTested,
+  removeTokenUser,
 } from './utils';
+import { albumsRoutes, artistsRoutes, tracksRoutes } from './endpoints';
 
 const createArtistDto = {
   name: 'TEST_artist',
@@ -25,7 +24,7 @@ describe('artist (e2e)', () => {
   beforeAll(async () => {
     if (shouldAuthorizationBeTested) {
       const result = await getTokenAndUserId(unauthorizedRequest);
-      commonHeaders.Authorization = result.token;
+      commonHeaders['Authorization'] = result.token;
       mockUserId = result.mockUserId;
     }
   });
@@ -36,8 +35,8 @@ describe('artist (e2e)', () => {
       await removeTokenUser(unauthorizedRequest, mockUserId, commonHeaders);
     }
 
-    if (commonHeaders.Authorization) {
-      delete commonHeaders.Authorization;
+    if (commonHeaders['Authorization']) {
+      delete commonHeaders['Authorization'];
     }
   });
 

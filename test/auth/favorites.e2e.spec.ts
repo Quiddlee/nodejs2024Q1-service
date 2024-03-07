@@ -1,7 +1,6 @@
-import { StatusCodes } from 'http-status-codes';
-
-import { favoritesRoutes } from '../endpoints';
 import { request } from '../lib';
+import { StatusCodes } from 'http-status-codes';
+import { favoritesRoutes } from '../endpoints';
 
 // Probability of collisions for UUID is almost zero
 const randomUUID = '0a35dd62-e09f-444b-a628-f4e7c6954f57';

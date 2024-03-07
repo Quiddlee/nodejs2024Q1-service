@@ -1,7 +1,6 @@
-import { StatusCodes } from 'http-status-codes';
-
-import { albumsRoutes } from '../endpoints';
 import { request } from '../lib';
+import { albumsRoutes } from '../endpoints';
+import { StatusCodes } from 'http-status-codes';
 
 const createAlbumDto = {
   name: 'TEST_ALBUM',

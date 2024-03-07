@@ -1,13 +1,12 @@
-import { StatusCodes } from 'http-status-codes';
 import { validate } from 'uuid';
-
-import { tracksRoutes } from './endpoints';
+import { StatusCodes } from 'http-status-codes';
 import { request } from './lib';
 import {
   getTokenAndUserId,
-  removeTokenUser,
   shouldAuthorizationBeTested,
+  removeTokenUser,
 } from './utils';
+import { tracksRoutes } from './endpoints';
 
 const createTrackDto = {
   name: 'TEST_TRACK',
@@ -27,7 +26,7 @@ describe('Tracks (e2e)', () => {
   beforeAll(async () => {
     if (shouldAuthorizationBeTested) {
       const result = await getTokenAndUserId(unauthorizedRequest);
-      commonHeaders.Authorization = result.token;
+      commonHeaders['Authorization'] = result.token;
       mockUserId = result.mockUserId;
     }
   });
@@ -38,8 +37,8 @@ describe('Tracks (e2e)', () => {
       await removeTokenUser(unauthorizedRequest, mockUserId, commonHeaders);
     }
 
-    if (commonHeaders.Authorization) {
-      delete commonHeaders.Authorization;
+    if (commonHeaders['Authorization']) {
+      delete commonHeaders['Authorization'];
     }
   });
 

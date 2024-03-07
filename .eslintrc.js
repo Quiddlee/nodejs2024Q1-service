@@ -26,6 +26,7 @@ module.exports = {
     'prettier.config.js',
     'node_modules',
     'environment.d.ts',
+    'test',
   ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
