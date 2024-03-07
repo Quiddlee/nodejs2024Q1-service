@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserDB } from '../db/userDB';
+import { DB } from '../db/db';
 
 // TODO: change to use Prisma client
 @Injectable()
-export class DatabaseService extends UserDB {}
+export class DatabaseService extends DB {}

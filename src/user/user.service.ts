@@ -9,22 +9,22 @@ export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.databaseService.create(createUserDto);
+    return this.databaseService.createUser(createUserDto);
   }
 
   findAll() {
-    return this.databaseService.findMany();
+    return this.databaseService.findUserMany();
   }
 
   findOne(id: string) {
-    return this.databaseService.findById(id);
+    return this.databaseService.findUserById(id);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.databaseService.update(id, updateUserDto);
+    return this.databaseService.updateUser(id, updateUserDto);
   }
 
   remove(id: string) {
-    return this.databaseService.delete(id);
+    return this.databaseService.deleteUser(id);
   }
 }

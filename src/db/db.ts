@@ -1,11 +1,42 @@
-export abstract class DB<TData> {
-  abstract findById(id: string): TData;
+import { DBTable } from '../../types/types';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UpdateUserDto } from '../user/dto/update-user.dto';
+import { User } from '../user/entities/user.entity';
 
-  abstract findMany(): TData[];
+export class DB {
+  private userTable: DBTable<User> = {};
 
-  abstract create(dto: unknown): TData;
+  findUserById(id: string) {
+    return this.userTable[id];
+  }
 
-  abstract delete(id: string): TData;
+  findUserMany() {
+    return Object.values(this.userTable);
+  }
 
-  abstract update(id: string, dto: unknown): TData;
+  createUser({ login, password }: CreateUserDto) {
+    const user = new User(login, password);
+    this.userTable[user.id] = user;
+    return user;
+  }
+
+  deleteUser(id: string) {
+    const toDeleteUser = this.userTable[id];
+
+    if (!toDeleteUser) return toDeleteUser;
+
+    this.userTable = Object.fromEntries(
+      Object.entries(this.userTable).filter(
+        ([, user]) => user !== toDeleteUser,
+      ),
+    );
+
+    return toDeleteUser;
+  }
+
+  updateUser(id: string, dto: UpdateUserDto) {
+    const user = this.userTable[id];
+    user?.update(dto);
+    return user;
+  }
 }
