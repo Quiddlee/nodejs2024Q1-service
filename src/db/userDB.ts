@@ -1,44 +1,40 @@
+import { DB } from './db';
+import { DBTable } from '../../types/types';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
 import { User } from '../user/entities/user.entity';
 
-type UsersTable = {
-  [id: string]: User;
-};
-
-export class UserDB {
-  private userTable: UsersTable = {};
+export class UserDB extends DB<User> {
+  private table: DBTable<User> = {};
 
   findById(id: string) {
-    return this.userTable[id];
+    return this.table[id];
   }
 
   findMany() {
-    return Object.values(this.userTable);
+    return Object.values(this.table);
   }
 
   create({ login, password }: CreateUserDto) {
     const user = new User(login, password);
-    this.userTable[user.id] = user;
+    this.table[user.id] = user;
     return user;
   }
 
   delete(id: string) {
-    const toDeleteUser = this.userTable[id];
+    const toDeleteUser = this.table[id];
 
     if (!toDeleteUser) return toDeleteUser;
 
-    this.userTable = Object.fromEntries(
-      Object.entries(this.userTable).filter(
-        ([, user]) => user !== toDeleteUser,
-      ),
+    this.table = Object.fromEntries(
+      Object.entries(this.table).filter(([, user]) => user !== toDeleteUser),
     );
 
     return toDeleteUser;
   }
 
   update(id: string, dto: UpdateUserDto) {
-    const user = this.userTable[id];
+    const user = this.table[id];
     user?.update(dto);
     return user;
   }
