@@ -1,10 +1,15 @@
 import { DBTable } from '../../types/types';
+import { CreateTrackDto } from '../track/dto/create-track.dto';
+import { UpdateTrackDto } from '../track/dto/update-track.dto';
+import { Track } from '../track/entities/track.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
 import { User } from '../user/entities/user.entity';
 
 export class DB {
   private userTable: DBTable<User> = {};
+
+  private trackTable: DBTable<Track> = {};
 
   findUserById(id: string) {
     return this.userTable[id];
@@ -38,5 +43,39 @@ export class DB {
     const user = this.userTable[id];
     user?.update(dto);
     return user;
+  }
+
+  findTrackById(id: string): Track {
+    return this.trackTable[id];
+  }
+
+  findTrackMany(): Track[] {
+    return Object.values(this.trackTable);
+  }
+
+  createTrack({ name, duration, artistId, albumId }: CreateTrackDto): Track {
+    const track = new Track(name, duration, artistId, albumId);
+    this.trackTable[track.id] = track;
+    return track;
+  }
+
+  deleteTrack(id: string): Track {
+    const toDeleteTrack = this.trackTable[id];
+
+    if (!toDeleteTrack) return toDeleteTrack;
+
+    this.trackTable = Object.fromEntries(
+      Object.entries(this.trackTable).filter(
+        ([, track]) => track !== toDeleteTrack,
+      ),
+    );
+
+    return toDeleteTrack;
+  }
+
+  updateTrack(id: string, dto: UpdateTrackDto): Track {
+    const track = this.trackTable[id];
+    this.trackTable[id] = { ...track, ...dto };
+    return track;
   }
 }
