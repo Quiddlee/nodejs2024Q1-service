@@ -9,7 +9,7 @@ export class Album {
 
   artistId: string | null;
 
-  constructor(name: string, year: number, artistId: string) {
+  constructor(name: string, year: number, artistId: string | null) {
     this.id = uuid.v4();
     this.name = name;
     this.year = year;
