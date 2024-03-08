@@ -57,7 +57,7 @@ export class UserController {
   ) {
     const { oldPassword } = updateUserDto;
     const user = this.userService.findOne(id);
-    const isSamePassword = oldPassword === user.password;
+    const isSamePassword = oldPassword === user?.password;
 
     if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
 

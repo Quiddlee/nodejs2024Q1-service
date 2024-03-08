@@ -11,11 +11,11 @@ class UserDB implements DB<User> {
     return this.#table[id];
   }
 
-  findMany() {
+  findMany(): User[] {
     return Object.values(this.#table);
   }
 
-  create({ login, password }: CreateUserDto): User | null {
+  create({ login, password }: CreateUserDto): User {
     const user = new User(login, password);
     this.#table[user.id] = user;
     return user;
