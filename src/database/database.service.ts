@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { DB } from '../db/db';
+import { DB } from '../../db/db';
 
 // TODO: change to use Prisma client
 @Injectable()

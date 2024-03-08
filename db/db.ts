@@ -1,15 +1,15 @@
-import { DBTable } from '../../types/types';
-import { CreateAlbumDto } from '../album/dto/create-album.dto';
-import { Album } from '../album/entities/album.entity';
-import { CreateArtistDto } from '../artist/dto/create-artist.dto';
-import { UpdateArtistDto } from '../artist/dto/update-artist.dto';
-import { Artist } from '../artist/entities/artist.entity';
-import { CreateTrackDto } from '../track/dto/create-track.dto';
-import { UpdateTrackDto } from '../track/dto/update-track.dto';
-import { Track } from '../track/entities/track.entity';
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import { UpdateUserDto } from '../user/dto/update-user.dto';
-import { User } from '../user/entities/user.entity';
+import { CreateAlbumDto } from '../src/album/dto/create-album.dto';
+import { Album } from '../src/album/entities/album.entity';
+import { CreateArtistDto } from '../src/artist/dto/create-artist.dto';
+import { UpdateArtistDto } from '../src/artist/dto/update-artist.dto';
+import { Artist } from '../src/artist/entities/artist.entity';
+import { CreateTrackDto } from '../src/track/dto/create-track.dto';
+import { UpdateTrackDto } from '../src/track/dto/update-track.dto';
+import { Track } from '../src/track/entities/track.entity';
+import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import { UpdateUserDto } from '../src/user/dto/update-user.dto';
+import { User } from '../src/user/entities/user.entity';
+import { DBTable } from '../types/types';
 
 export class DB {
   private userTable: DBTable<User> = {};
