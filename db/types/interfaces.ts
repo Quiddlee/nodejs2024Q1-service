@@ -1,7 +1,7 @@
 export interface DB<TEntity> {
-  findById(id: string): TEntity | null;
+  findById(id: string): TEntity | undefined;
   findMany(): TEntity[];
-  create(dto: unknown): TEntity | null;
-  delete(id: string): TEntity | null;
-  update(id: string, dto: unknown): TEntity | null;
+  create(dto: unknown): TEntity | undefined;
+  delete(id: string): TEntity | undefined;
+  update(id: string, dto: unknown): TEntity | undefined;
 }

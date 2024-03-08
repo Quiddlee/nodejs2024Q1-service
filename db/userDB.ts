@@ -7,12 +7,12 @@ import { DBTable } from '../types/types';
 class UserDB implements DB<User> {
   #table: DBTable<User> = {};
 
-  findById(id: string): User | null {
+  findById(id: string): User | undefined {
     return this.#table[id];
   }
 
   findMany(): User[] {
-    return Object.values(this.#table);
+    return <User[]>Object.values(this.#table);
   }
 
   create({ login, password }: CreateUserDto): User {
@@ -21,10 +21,10 @@ class UserDB implements DB<User> {
     return user;
   }
 
-  delete(id: string): User | null {
+  delete(id: string): User | undefined {
     const toDeleteUser = this.#table[id];
 
-    if (!toDeleteUser) return null;
+    if (!toDeleteUser) return undefined;
 
     this.#table = Object.fromEntries(
       Object.entries(this.#table).filter(([, user]) => user !== toDeleteUser),
@@ -33,7 +33,7 @@ class UserDB implements DB<User> {
     return toDeleteUser;
   }
 
-  update(id: string, dto: UpdateUserDto): User | null {
+  update(id: string, dto: UpdateUserDto): User | undefined {
     const user = this.#table[id];
     user?.update(dto);
     return user;

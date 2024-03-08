@@ -7,24 +7,24 @@ import { DBTable } from '../types/types';
 class AlbumDB implements DB<Album> {
   #table: DBTable<Album> = {};
 
-  findById(id: string): Album | null {
+  findById(id: string): Album | undefined {
     return this.#table[id];
   }
 
-  findMany() {
-    return Object.values(this.#table);
+  findMany(): Album[] {
+    return <Album[]>Object.values(this.#table);
   }
 
-  create({ name, artistId, year }: CreateAlbumDto): Album | null {
+  create({ name, artistId, year }: CreateAlbumDto): Album | undefined {
     const artist = new Album(name, year, artistId);
     this.#table[artist.id] = artist;
     return artist;
   }
 
-  delete(id: string): Album | null {
+  delete(id: string): Album | undefined {
     const toDeleteAlbum = this.#table[id];
 
-    if (!toDeleteAlbum) return toDeleteAlbum;
+    if (!toDeleteAlbum) return undefined;
 
     this.#table = Object.fromEntries(
       Object.entries(this.#table).filter(
@@ -35,10 +35,10 @@ class AlbumDB implements DB<Album> {
     return toDeleteAlbum;
   }
 
-  update(id: string, dto: UpdateArtistDto): Album | null {
+  update(id: string, dto: UpdateArtistDto): Album | undefined {
     const artist = this.#table[id];
 
-    if (!artist) return null;
+    if (!artist) return undefined;
 
     const newArtist = { ...artist, ...dto };
     this.#table[id] = newArtist;

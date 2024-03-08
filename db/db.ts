@@ -1,5 +1,5 @@
 import AlbumDB from './albumDB';
-import ArtistDB from './ArtistDB';
+import ArtistDB from './artistDB';
 import TrackDB from './trackDB';
 import UserDB from './userDB';
 

@@ -7,12 +7,12 @@ import { DBTable } from '../types/types';
 class TrackDB implements DB<Track> {
   #table: DBTable<Track> = {};
 
-  findById(id: string): Track | null {
+  findById(id: string): Track | undefined {
     return this.#table[id];
   }
 
   findMany(): Track[] {
-    return Object.values(this.#table);
+    return <Track[]>Object.values(this.#table);
   }
 
   create({ name, duration, artistId, albumId }: CreateTrackDto): Track {
@@ -21,10 +21,10 @@ class TrackDB implements DB<Track> {
     return track;
   }
 
-  delete(id: string): Track | null {
+  delete(id: string): Track | undefined {
     const toDeleteTrack = this.#table[id];
 
-    if (!toDeleteTrack) return null;
+    if (!toDeleteTrack) return undefined;
 
     this.#table = Object.fromEntries(
       Object.entries(this.#table).filter(
@@ -35,10 +35,10 @@ class TrackDB implements DB<Track> {
     return toDeleteTrack;
   }
 
-  update(id: string, dto: UpdateTrackDto): Track | null {
+  update(id: string, dto: UpdateTrackDto): Track | undefined {
     const track = this.#table[id];
 
-    if (!track) return null;
+    if (!track) return undefined;
 
     const newTrack = { ...track, ...dto };
     this.#table[id] = newTrack;
