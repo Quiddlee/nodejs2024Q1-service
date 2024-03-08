@@ -59,10 +59,10 @@ export class DB {
     return track;
   }
 
-  deleteTrack(id: string): Track {
+  deleteTrack(id: string): Track | null {
     const toDeleteTrack = this.trackTable[id];
 
-    if (!toDeleteTrack) return toDeleteTrack;
+    if (!toDeleteTrack) return null;
 
     this.trackTable = Object.fromEntries(
       Object.entries(this.trackTable).filter(
@@ -73,9 +73,13 @@ export class DB {
     return toDeleteTrack;
   }
 
-  updateTrack(id: string, dto: UpdateTrackDto): Track {
+  updateTrack(id: string, dto: UpdateTrackDto): Track | null {
     const track = this.trackTable[id];
-    this.trackTable[id] = { ...track, ...dto };
-    return track;
+
+    if (!track) return null;
+
+    const newTrack = { ...track, ...dto };
+    this.trackTable[id] = newTrack;
+    return newTrack;
   }
 }

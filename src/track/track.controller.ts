@@ -5,10 +5,11 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import {
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackService } from './track.service';
+import { errorMessage } from '../lib/const/const';
 
 @Controller('track')
 export class TrackController {
@@ -24,7 +26,8 @@ export class TrackController {
   @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
-    return this.trackService.create(createTrackDto);
+    const track = this.trackService.create(createTrackDto);
+    return track;
   }
 
   @Get()
@@ -34,21 +37,30 @@ export class TrackController {
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.trackService.findOne(id);
+    const track = this.trackService.findOne(id);
+    if (!track) throw new NotFoundException(errorMessage.TRACK_NOT_FOUND);
+    return track;
   }
 
   @UsePipes(new ValidationPipe())
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ) {
-    return this.trackService.update(id, updateTrackDto);
+    const updatedTrack = this.trackService.update(id, updateTrackDto);
+
+    if (!updatedTrack)
+      throw new NotFoundException(errorMessage.TRACK_NOT_FOUND);
+
+    return updatedTrack;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.trackService.remove(id);
+    const track = this.trackService.remove(id);
+    if (!track) throw new NotFoundException(errorMessage.TRACK_NOT_FOUND);
+    return track;
   }
 }
