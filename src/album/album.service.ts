@@ -9,22 +9,22 @@ export class AlbumService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   create(createAlbumDto: CreateAlbumDto) {
-    return this.databaseService.createAlbum(createAlbumDto);
+    return this.databaseService.album.create(createAlbumDto);
   }
 
   findAll() {
-    return this.databaseService.findAlbumMany();
+    return this.databaseService.album.findMany();
   }
 
   findOne(id: string) {
-    return this.databaseService.findAlbumById(id);
+    return this.databaseService.album.findById(id);
   }
 
   update(id: string, updateAlbumDto: UpdateAlbumDto) {
-    return this.databaseService.updateAlbum(id, updateAlbumDto);
+    return this.databaseService.album.update(id, updateAlbumDto);
   }
 
   remove(id: string) {
-    return this.databaseService.deleteAlbum(id);
+    return this.databaseService.album.delete(id);
   }
 }

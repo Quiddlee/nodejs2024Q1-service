@@ -9,22 +9,22 @@ export class ArtistService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   create(createArtistDto: CreateArtistDto) {
-    return this.databaseService.createArtist(createArtistDto);
+    return this.databaseService.artist.create(createArtistDto);
   }
 
   findAll() {
-    return this.databaseService.findArtistMany();
+    return this.databaseService.artist.findMany();
   }
 
   findOne(id: string) {
-    return this.databaseService.findArtistById(id);
+    return this.databaseService.artist.findById(id);
   }
 
   update(id: string, updateArtistDto: UpdateArtistDto) {
-    return this.databaseService.updateArtist(id, updateArtistDto);
+    return this.databaseService.artist.update(id, updateArtistDto);
   }
 
   remove(id: string) {
-    return this.databaseService.deleteArtist(id);
+    return this.databaseService.artist.delete(id);
   }
 }

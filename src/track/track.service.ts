@@ -9,22 +9,22 @@ export class TrackService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   create(createTrackDto: CreateTrackDto) {
-    return this.databaseService.createTrack(createTrackDto);
+    return this.databaseService.track.create(createTrackDto);
   }
 
   findAll() {
-    return this.databaseService.findTrackMany();
+    return this.databaseService.track.findMany();
   }
 
   findOne(id: string) {
-    return this.databaseService.findTrackById(id);
+    return this.databaseService.track.findById(id);
   }
 
   update(id: string, updateTrackDto: UpdateTrackDto) {
-    return this.databaseService.updateTrack(id, updateTrackDto);
+    return this.databaseService.track.update(id, updateTrackDto);
   }
 
   remove(id: string) {
-    return this.databaseService.deleteTrack(id);
+    return this.databaseService.track.delete(id);
   }
 }
