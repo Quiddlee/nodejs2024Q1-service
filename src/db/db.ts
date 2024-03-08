@@ -1,4 +1,7 @@
 import { DBTable } from '../../types/types';
+import { CreateArtistDto } from '../artist/dto/create-artist.dto';
+import { UpdateArtistDto } from '../artist/dto/update-artist.dto';
+import { Artist } from '../artist/entities/artist.entity';
 import { CreateTrackDto } from '../track/dto/create-track.dto';
 import { UpdateTrackDto } from '../track/dto/update-track.dto';
 import { Track } from '../track/entities/track.entity';
@@ -11,6 +14,9 @@ export class DB {
 
   private trackTable: DBTable<Track> = {};
 
+  private artistTable: DBTable<Artist> = {};
+
+  // USER
   findUserById(id: string) {
     return this.userTable[id];
   }
@@ -45,6 +51,7 @@ export class DB {
     return user;
   }
 
+  // TRACK
   findTrackById(id: string): Track {
     return this.trackTable[id];
   }
@@ -81,5 +88,44 @@ export class DB {
     const newTrack = { ...track, ...dto };
     this.trackTable[id] = newTrack;
     return newTrack;
+  }
+
+  // ARTIST
+  findArtistById(id: string) {
+    return this.artistTable[id];
+  }
+
+  findArtistMany() {
+    return Object.values(this.artistTable);
+  }
+
+  createArtist({ name, grammy }: CreateArtistDto) {
+    const artist = new Artist(name, grammy);
+    this.artistTable[artist.id] = artist;
+    return artist;
+  }
+
+  deleteArtist(id: string) {
+    const toDeleteArtist = this.artistTable[id];
+
+    if (!toDeleteArtist) return toDeleteArtist;
+
+    this.artistTable = Object.fromEntries(
+      Object.entries(this.artistTable).filter(
+        ([, artist]) => artist !== toDeleteArtist,
+      ),
+    );
+
+    return toDeleteArtist;
+  }
+
+  updateArtist(id: string, dto: UpdateArtistDto) {
+    const artist = this.artistTable[id];
+
+    if (!artist) return null;
+
+    const newArtist = { ...artist, ...dto };
+    this.artistTable[id] = newArtist;
+    return newArtist;
   }
 }
