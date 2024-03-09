@@ -11,6 +11,15 @@ class AlbumDB implements DB<Album> {
     return this.#table[id];
   }
 
+  findByArtistId(id: string): Album | undefined {
+    return Object.values(this.#table).find((album) => album?.artistId === id);
+  }
+
+  deleteArtist(id: string) {
+    const album = this.findByArtistId(id);
+    if (album) album.artistId = null;
+  }
+
   findMany(): Album[] {
     return <Album[]>Object.values(this.#table);
   }
