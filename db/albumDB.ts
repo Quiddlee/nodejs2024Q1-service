@@ -1,7 +1,7 @@
 import { DB } from './types/interfaces';
 import { CreateAlbumDto } from '../src/album/dto/create-album.dto';
+import { UpdateAlbumDto } from '../src/album/dto/update-album.dto';
 import { Album } from '../src/album/entities/album.entity';
-import { UpdateArtistDto } from '../src/artist/dto/update-artist.dto';
 import { DBTable } from '../types/types';
 
 class AlbumDB implements DB<Album> {
@@ -44,7 +44,7 @@ class AlbumDB implements DB<Album> {
     return toDeleteAlbum;
   }
 
-  update(id: string, dto: UpdateArtistDto): Album | undefined {
+  update(id: string, dto: UpdateAlbumDto): Album | undefined {
     const artist = this.#table[id];
 
     if (!artist) return undefined;
