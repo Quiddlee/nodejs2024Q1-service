@@ -9,6 +9,5 @@ export class CreateAlbumDto {
   @IsInt()
   year: number;
 
-  // TODO: create custom decorator with uuid | null?
   artistId: string | null;
 }
