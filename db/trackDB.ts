@@ -7,6 +7,15 @@ import { DBTable } from '../types/types';
 class TrackDB implements DB<Track> {
   #table: DBTable<Track> = {};
 
+  findByArtistId(id: string): Track | undefined {
+    return Object.values(this.#table).find((track) => track?.id === id);
+  }
+
+  removeArtist(id: string) {
+    const track = this.findByArtistId(id);
+    if (track) track.artistId = null;
+  }
+
   findById(id: string): Track | undefined {
     return this.#table[id];
   }
