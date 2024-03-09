@@ -25,6 +25,7 @@ export class AlbumService {
   }
 
   remove(id: string) {
+    this.databaseService.track.deleteAlbum(id);
     return this.databaseService.album.delete(id);
   }
 }

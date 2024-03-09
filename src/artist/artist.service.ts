@@ -25,7 +25,7 @@ export class ArtistService {
   }
 
   remove(id: string) {
-    this.databaseService.track.removeArtist(id);
+    this.databaseService.track.deleteArtist(id);
     return this.databaseService.artist.delete(id);
   }
 }

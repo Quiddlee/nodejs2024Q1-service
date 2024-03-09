@@ -8,12 +8,21 @@ class TrackDB implements DB<Track> {
   #table: DBTable<Track> = {};
 
   findByArtistId(id: string): Track | undefined {
-    return Object.values(this.#table).find((track) => track?.id === id);
+    return Object.values(this.#table).find((track) => track?.artistId === id);
   }
 
-  removeArtist(id: string) {
+  findByAlbumById(id: string): Track | undefined {
+    return Object.values(this.#table).find((track) => track?.albumId === id);
+  }
+
+  deleteArtist(id: string) {
     const track = this.findByArtistId(id);
     if (track) track.artistId = null;
+  }
+
+  deleteAlbum(id: string) {
+    const track = this.findByAlbumById(id);
+    if (track) track.albumId = null;
   }
 
   findById(id: string): Track | undefined {
