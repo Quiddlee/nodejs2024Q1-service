@@ -25,6 +25,7 @@ export class TrackService {
   }
 
   remove(id: string) {
+    this.databaseService.favorite.track.delete(id);
     return this.databaseService.track.delete(id);
   }
 }
