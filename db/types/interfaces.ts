@@ -5,3 +5,6 @@ export interface DB<TEntity> {
   delete(id: string): TEntity | undefined;
   update(id: string, dto: unknown): TEntity | undefined;
 }
+
+export interface FavoriteDB<TEntity>
+  extends Pick<DB<TEntity>, 'findMany' | 'create' | 'delete'> {}

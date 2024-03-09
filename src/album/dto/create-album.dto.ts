@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, Min, MinLength } from 'class-validator';
+import { IsInt, IsString, Min, MinLength } from 'class-validator';
 
 export class CreateAlbumDto {
   @MinLength(2)
@@ -10,6 +10,5 @@ export class CreateAlbumDto {
   year: number;
 
   // TODO: create custom decorator with uuid | null?
-  @IsNotEmpty()
   artistId: string | null;
 }
