@@ -13,6 +13,6 @@ export class Album {
     this.id = uuid.v4();
     this.name = name;
     this.year = year;
-    this.artistId = artistId;
+    this.artistId = artistId ?? null;
   }
 }

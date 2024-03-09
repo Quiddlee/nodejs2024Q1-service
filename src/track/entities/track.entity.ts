@@ -20,7 +20,7 @@ export class Track {
     this.id = uuid.v4();
     this.name = name;
     this.duration = duration;
-    this.artistId = artistId;
-    this.albumId = albumId;
+    this.artistId = artistId ?? null;
+    this.albumId = albumId ?? null;
   }
 }
