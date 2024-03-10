@@ -3,7 +3,7 @@ import { IsInt, IsString, Min, MinLength } from 'class-validator';
 import { IsUUIDOrNull } from '../../lib/shared/IsUUIDOrNull.decorator';
 
 export class CreateAlbumDto {
-  @MinLength(2)
+  @MinLength(3)
   @IsString()
   name: string;
 

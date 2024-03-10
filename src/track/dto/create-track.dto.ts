@@ -1,8 +1,10 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsInt, IsString, MaxLength, Min, MinLength } from 'class-validator';
 
 import { IsUUIDOrNull } from '../../lib/shared/IsUUIDOrNull.decorator';
 
 export class CreateTrackDto {
+  @MinLength(3)
+  @MaxLength(20)
   @IsString()
   name: string;
 
@@ -12,6 +14,7 @@ export class CreateTrackDto {
   @IsUUIDOrNull()
   albumId: string | null;
 
-  @IsNumber()
+  @Min(0)
+  @IsInt()
   duration: number;
 }
