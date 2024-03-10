@@ -1,5 +1,7 @@
 import { IsInt, IsString, Min, MinLength } from 'class-validator';
 
+import { IsUUIDOrNull } from '../../lib/shared/IsUUIDOrNull.decorator';
+
 export class CreateAlbumDto {
   @MinLength(2)
   @IsString()
@@ -9,5 +11,6 @@ export class CreateAlbumDto {
   @IsInt()
   year: number;
 
+  @IsUUIDOrNull()
   artistId: string | null;
 }
