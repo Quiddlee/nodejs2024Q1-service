@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
