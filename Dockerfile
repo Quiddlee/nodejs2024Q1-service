@@ -27,8 +27,12 @@ RUN chown -R app:app .
 # Run the application as a non-root user.
 USER app
 
-# install dependencies
-RUN npm ci
+# install dependencies and remove unnecessary files
+RUN npm ci && npm cache clean --force && rm -rf \
+    ./node_modules/.cache \
+    ./node_modules/.npm \
+    ./node_modules/.yarn \
+    ./node_modules/.pnpm
 
 # Copy the rest of the source files into the image.
 COPY . .

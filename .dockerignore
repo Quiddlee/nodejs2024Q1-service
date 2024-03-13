@@ -1,6 +1,7 @@
 **/.classpath
 **/.dockerignore
 **/.git
+**/.env.example
 **/.gitignore
 **/.project
 **/.settings
@@ -24,5 +25,7 @@
 **/values.dev.yaml
 **/build
 **/dist
+**/doc
+**/public
 LICENSE
 README.md
