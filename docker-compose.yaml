@@ -11,6 +11,15 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: .
+          target: /app
+          action: sync
   db:
     image: postgres:16.2-alpine
     restart: always
