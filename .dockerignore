@@ -27,5 +27,6 @@
 **/dist
 **/doc
 **/public
+**/test
 LICENSE
 README.md

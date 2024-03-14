@@ -1,44 +1,36 @@
-ARG NODE_VERSION=20.0.0
+ARG NODE_VERSION=20
 
-FROM node:${NODE_VERSION}-alpine
+FROM node:${NODE_VERSION}-alpine as build-stage
 
-# add user to group
-RUN addgroup app && adduser -S -G app app
-
-# set the user to run the app
-USER app
-
-# set the working directory to /app
 WORKDIR /app
 
-# copy package.json and package-lock.json to the working directory
-# This is done before copying the rest of the files to take advantage of Docker’s cache
-# If the package.json and package-lock.json files haven’t changed, Docker will use the cached dependencies
-COPY package*.json ./
+COPY package.json ./
 
-# Run the application as a root user.
-USER root
+RUN npm i --only=prod && npm i @nestjs/cli
 
-# change the ownership of the /app directory to the app user
-# chown -R <user>:<group> <directory>
-# chown command changes the user and/or group ownership of for given file.
-RUN chown -R app:app .
+COPY . .
 
-# Run the application as a non-root user.
-USER app
+RUN npx prisma generate && npm run build
 
-# install dependencies and remove unnecessary files
-RUN npm ci && npm cache clean --force && rm -rf \
+FROM node:${NODE_VERSION}-alpine as runtime-stage
+
+WORKDIR /app
+
+COPY --from=build-stage /app/dist ./dist
+COPY --from=build-stage /app/.env ./
+COPY --from=build-stage /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=build-stage /app/node_modules/.prisma ./node_modules/.prisma
+COPY package.json ./
+
+RUN npm i --only=prod  \
+    && npm cache clean --force  \
+    && rm package.json  \
+    && rm -rf \
     ./node_modules/.cache \
     ./node_modules/.npm \
     ./node_modules/.yarn \
     ./node_modules/.pnpm
 
-# Copy the rest of the source files into the image.
-COPY . .
-
-# Expose the port that the application listens on.
 EXPOSE ${PORT}
 
-# Run the application.
-CMD npx prisma generate && npm run start:dev
+CMD node dist/src/main.js
