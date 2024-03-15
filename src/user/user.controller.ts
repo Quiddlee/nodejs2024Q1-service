@@ -51,12 +51,12 @@ export class UserController {
   @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const { oldPassword } = updateUserDto;
-    const user = this.userService.findOne(id);
+    const user = await this.userService.findOne(id);
     const isSamePassword = oldPassword === user?.password;
 
     if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
