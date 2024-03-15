@@ -2,32 +2,60 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { DatabaseService } from '../database/database.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   create(createArtistDto: CreateArtistDto) {
-    return this.databaseService.artist.create(createArtistDto);
+    return this.prismaService.artist.create({ data: createArtistDto });
   }
 
   findAll() {
-    return this.databaseService.artist.findMany();
+    return this.prismaService.artist.findMany();
   }
 
   findOne(id: string) {
-    return this.databaseService.artist.findById(id);
+    return this.prismaService.artist.findUnique({ where: { id } });
   }
 
   update(id: string, updateArtistDto: UpdateArtistDto) {
-    return this.databaseService.artist.update(id, updateArtistDto);
+    return this.prismaService.artist.update({
+      where: { id },
+      data: updateArtistDto,
+    });
   }
 
-  remove(id: string) {
-    this.databaseService.track.deleteArtist(id);
-    this.databaseService.album.deleteArtist(id);
-    this.databaseService.favorite.artist.delete(id);
-    return this.databaseService.artist.delete(id);
+  async remove(id: string) {
+    // this.prismaService.favorite.artist.delete(id);
+    const artistTracks = await this.prismaService.track.findMany({
+      where: { artistId: id },
+    });
+
+    const artistAlbums = await this.prismaService.album.findMany({
+      where: { artistId: id },
+    });
+
+    // TODO: remove artist from favorites
+    // this.prismaService.favorites.delete({where:{artists:{has:{}}}});
+
+    // Delete artist id for all artist's albums
+    artistAlbums.forEach((album) =>
+      this.prismaService.track.update({
+        where: { id: album.id },
+        data: { artistId: null },
+      }),
+    );
+
+    // Delete artist id for all artist's tracks
+    artistTracks.forEach((track) =>
+      this.prismaService.track.update({
+        where: { id: track.id },
+        data: { artistId: null },
+      }),
+    );
+
+    return this.prismaService.artist.delete({ where: { id } });
   }
 }
