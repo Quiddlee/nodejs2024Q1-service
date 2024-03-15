@@ -12,7 +12,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main.js",
     "lint": "eslint \"{src,apps,libs,test,types,db}/**/*.ts\" --fix",
     "type-check": "tsc --noEmit",
     "test": "jest --testPathIgnorePatterns refresh.e2e.spec.ts --noStackTrace --runInBand",
@@ -22,7 +22,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "docker:scan": "docker login && docker scout cves nodejs2024q1-service-server && docker scout cves postgres:16.2-alpine"
+    "docker:scan": "docker login && docker scout cves nodejs2024q1-service-server && docker scout cves postgres:16.2-alpine",
+    "start:migrate:prod": "prisma migrate dev --name init && npm run start:prod"
   },
   "engines": {
     "node": "20.0.0"
