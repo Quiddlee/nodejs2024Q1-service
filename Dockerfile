@@ -20,11 +20,11 @@ COPY --from=build-stage /app/dist ./dist
 COPY --from=build-stage /app/.env ./
 COPY --from=build-stage /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=build-stage /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build-stage /app/prisma ./prisma
 COPY package.json ./
 
 RUN npm i --only=prod  \
     && npm cache clean --force  \
-    && rm package.json  \
     && rm -rf \
     ./node_modules/.cache \
     ./node_modules/.npm \
@@ -33,4 +33,4 @@ RUN npm i --only=prod  \
 
 EXPOSE ${PORT}
 
-CMD node dist/src/main.js
+CMD [  "npm", "run", "start:migrate:prod" ]
