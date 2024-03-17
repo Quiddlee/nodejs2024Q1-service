@@ -1,6 +1,5 @@
 import { DB } from './types/interfaces';
 import { CreateUserDto } from '../src/user/dto/create-user.dto';
-import { UpdateUserDto } from '../src/user/dto/update-user.dto';
 import { User } from '../src/user/entities/user.entity';
 import { DBTable } from '../types/types';
 
@@ -33,10 +32,8 @@ class UserDB implements DB<User> {
     return toDeleteUser;
   }
 
-  update(id: string, dto: UpdateUserDto): User | undefined {
-    const user = this.#table[id];
-    user?.update(dto);
-    return user;
+  update(): User | undefined {
+    return null as unknown as User;
   }
 }
 
