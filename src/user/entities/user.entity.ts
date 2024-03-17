@@ -1,8 +1,6 @@
 import { Exclude } from 'class-transformer';
 import * as uuid from 'uuid';
 
-import { UpdateUserDto } from '../dto/update-user.dto';
-
 export class User {
   public id: string;
 
@@ -22,13 +20,7 @@ export class User {
     this.login = login;
     this.password = password;
     this.version = 1;
-    this.createdAt = Date.now();
+    this.createdAt = 123;
     this.updatedAt = this.createdAt;
-  }
-
-  update({ newPassword }: UpdateUserDto) {
-    this.password = newPassword;
-    this.version += 1;
-    this.updatedAt = Date.now();
   }
 }
