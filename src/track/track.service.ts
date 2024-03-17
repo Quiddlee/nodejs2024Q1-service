@@ -8,28 +8,34 @@ import { PrismaService } from '../prisma/prisma.service';
 export class TrackService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createTrackDto: CreateTrackDto) {
+  async create(createTrackDto: CreateTrackDto) {
     return this.prismaService.track.create({ data: createTrackDto });
   }
 
-  findAll() {
+  async findAll() {
     return this.prismaService.track.findMany();
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     return this.prismaService.track.findUnique({ where: { id } });
   }
 
-  update(id: string, updateTrackDto: UpdateTrackDto) {
-    return this.prismaService.track.update({
-      where: { id },
-      data: updateTrackDto,
-    });
+  async update(id: string, updateTrackDto: UpdateTrackDto) {
+    try {
+      return await this.prismaService.track.update({
+        where: { id },
+        data: updateTrackDto,
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  remove(id: string) {
-    // TODO: delete from favorite
-    // this.prismaService.favorite.track.delete(id);
-    return this.prismaService.track.delete({ where: { id } });
+  async remove(id: string) {
+    try {
+      return await this.prismaService.track.delete({ where: { id } });
+    } catch (e) {
+      return null;
+    }
   }
 }
