@@ -48,10 +48,7 @@ export class FavoriteController {
 
   @Get()
   findAll() {
-    const tracks = this.favoriteService.findAllTracks();
-    const albums = this.favoriteService.findAllAlbums();
-    const artists = this.favoriteService.findAllArtists();
-    return { tracks, albums, artists };
+    return this.favoriteService.findAll();
   }
 
   @Delete('track/:id')
