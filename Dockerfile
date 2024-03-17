@@ -10,20 +10,24 @@ RUN npm i --only=prod && npm i @nestjs/cli
 
 COPY . .
 
-RUN npx prisma generate && npm run build
+RUN npx prisma generate
 
 FROM node:${NODE_VERSION}-alpine as runtime-stage
 
 WORKDIR /app
 
-COPY --from=build-stage /app/dist ./dist
+COPY --from=build-stage /app/src ./src
+COPY --from=build-stage /app/db ./db
+COPY --from=build-stage /app/types ./types
 COPY --from=build-stage /app/.env ./
+COPY --from=build-stage /app/tsconfig.json ./
 COPY --from=build-stage /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=build-stage /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=build-stage /app/prisma ./prisma
+
 COPY package.json ./
 
-RUN npm i --only=prod  \
+RUN npm i && npm i @nestjs/cli  \
     && npm cache clean --force  \
     && rm -rf \
     ./node_modules/.cache \
@@ -33,4 +37,4 @@ RUN npm i --only=prod  \
 
 EXPOSE ${PORT}
 
-CMD [  "npm", "run", "start:migrate:prod" ]
+CMD [  "npm", "run", "start:migrate:dev" ]

@@ -4,6 +4,13 @@
 **/.env.example
 **/.gitignore
 **/.project
+**/.editorconfig
+**/.eslintrc.js
+**/.prettierrc
+**/jest.config.json
+**/nest-cli.json
+**/tsconfig.build.json
+**/environment.d.ts
 **/.settings
 **/.toolstarget
 **/.vs
