@@ -17,7 +17,6 @@ FROM node:${NODE_VERSION}-alpine as runtime-stage
 WORKDIR /app
 
 COPY --from=build-stage /app/src ./src
-COPY --from=build-stage /app/db ./db
 COPY --from=build-stage /app/types ./types
 COPY --from=build-stage /app/.env ./
 COPY --from=build-stage /app/tsconfig.json ./
