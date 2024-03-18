@@ -21,8 +21,8 @@ export class FavoriteController {
 
   @UsePipes(new ValidationPipe())
   @Post('track/:id')
-  createTrack(@Param('id', ParseUUIDPipe) id: string) {
-    const track = this.favoriteService.createTrack(id);
+  async createTrack(@Param('id', ParseUUIDPipe) id: string) {
+    const track = await this.favoriteService.createTrack(id);
     if (!track)
       throw new UnprocessableEntityException(errorMessage.TRACK_NOT_FOUND);
     return track;
@@ -30,8 +30,8 @@ export class FavoriteController {
 
   @UsePipes(new ValidationPipe())
   @Post('album/:id')
-  createAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    const album = this.favoriteService.createAlbum(id);
+  async createAlbum(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.favoriteService.createAlbum(id);
     if (!album)
       throw new UnprocessableEntityException(errorMessage.ALBUM_NOT_FOUND);
     return album;
@@ -39,22 +39,22 @@ export class FavoriteController {
 
   @UsePipes(new ValidationPipe())
   @Post('artist/:id')
-  createArtist(@Param('id', ParseUUIDPipe) id: string) {
-    const artist = this.favoriteService.createArtist(id);
+  async createArtist(@Param('id', ParseUUIDPipe) id: string) {
+    const artist = await this.favoriteService.createArtist(id);
     if (!artist)
       throw new UnprocessableEntityException(errorMessage.ARTIST_NOT_FOUND);
     return artist;
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.favoriteService.findAll();
   }
 
   @Delete('track/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeTrack(@Param('id', ParseUUIDPipe) id: string) {
-    const track = this.favoriteService.removeTrack(id);
+  async removeTrack(@Param('id', ParseUUIDPipe) id: string) {
+    const track = await this.favoriteService.removeTrack(id);
     if (!track)
       throw new UnprocessableEntityException(errorMessage.TRACK_NOT_FOUND);
     return track;
@@ -62,8 +62,8 @@ export class FavoriteController {
 
   @Delete('album/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeAlbum(@Param('id', ParseUUIDPipe) id: string) {
-    const album = this.favoriteService.removeAlbum(id);
+  async removeAlbum(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.favoriteService.removeAlbum(id);
     if (!album)
       throw new UnprocessableEntityException(errorMessage.ALBUM_NOT_FOUND);
     return album;
@@ -71,8 +71,8 @@ export class FavoriteController {
 
   @Delete('artist/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeArtist(@Param('id', ParseUUIDPipe) id: string) {
-    const artist = this.favoriteService.removeArtist(id);
+  async removeArtist(@Param('id', ParseUUIDPipe) id: string) {
+    const artist = await this.favoriteService.removeArtist(id);
     if (!artist)
       throw new UnprocessableEntityException(errorMessage.ARTIST_NOT_FOUND);
     return artist;

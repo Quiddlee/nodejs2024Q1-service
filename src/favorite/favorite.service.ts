@@ -1,50 +1,87 @@
 import { Injectable } from '@nestjs/common';
 
-import { DatabaseService } from '../database/database.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FavoriteService {
-  constructor(
-    private readonly databaseService: DatabaseService,
-    private readonly prismaService: PrismaService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
-  createTrack(id: string) {
+  async createTrack(id: string) {
+    const favorites = await this.prismaService.favorites.findUnique({
+      where: { id: 'favs' },
+    });
+
+    if (!favorites) {
+      await this.prismaService.favorites.create({
+        data: { id: 'favs' },
+      });
+    }
+
     return this.prismaService.track.update({
       where: { id },
       data: { favoritesId: 'favs' },
     });
   }
 
-  createAlbum(id: string) {
-    return this.databaseService.favorite.album.create(id);
+  async createAlbum(id: string) {
+    const favorites = await this.prismaService.favorites.findUnique({
+      where: { id: 'favs' },
+    });
+
+    if (!favorites) {
+      await this.prismaService.favorites.create({
+        data: { id: 'favs' },
+      });
+    }
+
+    return this.prismaService.album.update({
+      where: { id },
+      data: { favoritesId: 'favs' },
+    });
   }
 
-  createArtist(id: string) {
-    return this.databaseService.favorite.artist.create(id);
+  async createArtist(id: string) {
+    const favorites = await this.prismaService.favorites.findUnique({
+      where: { id: 'favs' },
+    });
+
+    if (!favorites) {
+      await this.prismaService.favorites.create({
+        data: { id: 'favs' },
+      });
+    }
+
+    return this.prismaService.artist.update({
+      where: { id },
+      data: { favoritesId: 'favs' },
+    });
   }
 
   async findAll() {
-    const data = await this.prismaService.favorites.findUnique({
+    return this.prismaService.favorites.findMany({
       where: { id: 'favs' },
       select: { artists: true, albums: true, tracks: true },
     });
-
-    console.log(data);
-
-    return data;
   }
 
   removeTrack(id: string) {
-    return this.databaseService.favorite.track.delete(id);
+    return this.prismaService.track.update({
+      where: { id },
+      data: { favoritesId: null },
+    });
   }
 
   removeAlbum(id: string) {
-    return this.databaseService.favorite.album.delete(id);
+    return this.prismaService.album.update({
+      where: { id },
+      data: { favoritesId: null },
+    });
   }
 
   removeArtist(id: string) {
-    return this.databaseService.favorite.artist.delete(id);
+    return this.prismaService.artist.update({
+      where: { id },
+      data: { favoritesId: null },
+    });
   }
 }
