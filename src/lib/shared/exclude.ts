@@ -1,11 +1,11 @@
-function exclude<User, Key extends keyof User>(
-  user: User,
+function exclude<TEntity, Key extends keyof TEntity>(
+  entity: TEntity,
   keys: Key[],
-): Omit<User, Key> {
+): Omit<TEntity, Key> {
   return Object.fromEntries(
-    Object.entries(user as { [k: string]: unknown }).filter(
+    Object.entries(entity as { [k: string]: unknown }).filter(
       ([key]) => !keys.includes(key as Key),
     ),
-  ) as Omit<User, Key>;
+  ) as Omit<TEntity, Key>;
 }
 export default exclude;
