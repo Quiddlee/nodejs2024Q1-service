@@ -14,3 +14,5 @@ export const SWAGGER_CONFIG = new DocumentBuilder()
   .setVersion('1.0')
   .addTag('Home Library')
   .build();
+
+export const FAVS_TABLE_ID = 'favs';
