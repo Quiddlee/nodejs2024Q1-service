@@ -30,6 +30,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - db-data:/var/lib/postgresql/data
+      - logs:/home/logs
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     healthcheck:
@@ -42,6 +43,7 @@ services:
 
 volumes:
   db-data:
+  logs:
 
 networks:
   app-network:
