@@ -10,10 +10,11 @@ To run the project locally, you would have to download zip file with the reposit
 🤔 What things do you need to do in order to run our project locally?
 
 * ⚡ Use node 20 LTS
-* ✌️ Installed [.git](https://git-scm.com/) on your computer. 
+* ✌️ Installed [.git](https://git-scm.com/) on your computer.
 * 📝 Code Editor of your choice.
+* 🐳 Docker.
 
-## 🔮 Installation And Preparation 
+## 🔮 Installation And Preparation
 
 First make sure you have all the things listed in the previous section. Then clone our repository to your computer: 👌
 
@@ -41,11 +42,17 @@ JWT_SECRET_KEY=secret123123
 JWT_SECRET_REFRESH_KEY=secret123123
 TOKEN_EXPIRE_TIME=1h
 TOKEN_REFRESH_EXPIRE_TIME=24h
+
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=home-library
+POSTGRES_PORT=5432
+DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public"
 ```
 
 🤩 Finally run a development server:
 ```
-npm run start:dev
+docker compose up
 ```
 Aaaaand you're done! 🎉🥳
 
@@ -100,7 +107,7 @@ Type check the App with `TypeScript`:
 npm run type-check
 ```
 
-## 🧪 Testing 
+## 🧪 Testing
 
 After application running open new terminal and enter:
 
@@ -128,32 +135,47 @@ To run only specific test suite with authorization
 npm run test:auth -- <path to suite>
 ```
 
+## 🐳 Docker
+Run application
+```
+docker compose up
+```
+Run application in watch mode
+```
+docker compose watch
+```
+Scan docker images for vulnerabilities
+```
+npm run docker:scan
+```
+
 # ⚙️ Technology Stack
 
 ## 🦈 Developing
-*  🦅 **Nest.js** - The Backend Framework
+* 🦅 **Nest.js** - The Backend Framework
 * 💖 **TypeScript** - The Language
-* 🦄 **Prisma** - The ORM 
-* 🔒 **bcrypt** - The Password Hasher 
-* 🎫 **jsonwebtoken** - The JWT Token Generator 
-* 📖 **Nest.js/Swagger** - The OpenAPI Documentation 
+* 🦄 **Prisma** - The ORM
+* 🔒 **bcrypt** - The Password Hasher
+* 🎫 **jsonwebtoken** - The JWT Token Generator
+* 📖 **Nest.js/Swagger** - The OpenAPI Documentation
+* 🐳 **Docker** - The Containerization tool
 
 ## 🧹 Code Quality
-* 🧪 **Jest** - The Test Runner 
-* 🫂 **Supertest** - The Testing Framework 
-* 🔔 **ESLint** — Air-bnb base - The Linter 
-* 👏 **Prettier** - The Code Formatter 
-* 😎 **EditorConfig** - The Code Style Enforcer 
+* 🧪 **Jest** - The Test Runner
+* 🫂 **Supertest** - The Testing Framework
+* 🔔 **ESLint** — Air-bnb base - The Linter
+* 👏 **Prettier** - The Code Formatter
+* 😎 **EditorConfig** - The Code Style Enforcer
 
-## 📚 External Libraries 
-* ✌️ **dotenv** - The Environment Variables Library 
-* 🌐 **cross-env** - The Environment Variables Loader 
+## 📚 External Libraries
+* ✌️ **dotenv** - The Environment Variables Library
+* 🌐 **cross-env** - The Environment Variables Loader
 
 
 # 📍 Working with the API
 🙏 Following the link below, you can find ```Postman``` collection that will make your life easier while working with the API!  [postman collection](https://www.postman.com/bold-spaceship-739379/workspace/node-js-service/overview)
 
-![img.png](./public/img.png)
+![img.png](public/img.png)
 
 ## 🌊 API endpoints
 The API has the following endpoints:
