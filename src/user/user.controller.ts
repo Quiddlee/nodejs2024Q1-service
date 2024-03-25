@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   ForbiddenException,
@@ -12,51 +11,55 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { errorMessage } from '../lib/const/const';
+import exclude from '../lib/shared/exclude';
+import formatUserDate from '../lib/shared/formatUserDate';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.create(createUserDto);
+    const updUser = formatUserDate(user);
+    return exclude<User, 'password'>(updUser!, ['password']);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    const users = await this.userService.findAll();
+    const updUsers = users.map(formatUserDate);
+    return updUsers.map((user) =>
+      exclude<User, 'password'>(user!, ['password']),
+    );
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    const user = this.userService.findOne(id);
-
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const user = await this.userService.findOne(id);
     if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
-    return user;
+    const updUser = formatUserDate(user);
+    return exclude<User, 'password'>(updUser!, ['password']);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const { oldPassword } = updateUserDto;
-    const user = this.userService.findOne(id);
+    const user = await this.userService.findOne(id);
     const isSamePassword = oldPassword === user?.password;
 
     if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
@@ -64,17 +67,17 @@ export class UserController {
     if (!isSamePassword)
       throw new ForbiddenException(errorMessage.INVALID_PASSWORD);
 
-    const updatedUser = this.userService.update(id, updateUserDto);
-    return updatedUser;
+    const updatedUser = await this.userService.update(id, updateUserDto);
+    const updUser = formatUserDate(updatedUser!);
+    return exclude<User, 'password'>(updUser!, ['password']);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    const user = this.userService.remove(id);
-
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    const user = await this.userService.remove(id);
     if (!user) throw new NotFoundException(errorMessage.USER_NOT_FOUND);
-    return user;
+    const updUser = formatUserDate(user);
+    return exclude<User, 'password'>(updUser!, ['password']);
   }
 }

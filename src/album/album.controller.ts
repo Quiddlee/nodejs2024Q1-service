@@ -25,40 +25,38 @@ export class AlbumController {
 
   @UsePipes(new ValidationPipe())
   @Post()
-  create(@Body() createAlbumDto: CreateAlbumDto) {
+  async create(@Body() createAlbumDto: CreateAlbumDto) {
     return this.albumService.create(createAlbumDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.albumService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    const album = this.albumService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.albumService.findOne(id);
     if (!album) throw new NotFoundException(errorMessage.ALBUM_NOT_FOUND);
     return album;
   }
 
   @UsePipes(new ValidationPipe())
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
   ) {
-    const updatedAlbum = this.albumService.update(id, updateAlbumDto);
-
+    const updatedAlbum = await this.albumService.update(id, updateAlbumDto);
     if (!updatedAlbum)
       throw new NotFoundException(errorMessage.ALBUM_NOT_FOUND);
-
     return updatedAlbum;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    const album = this.albumService.remove(id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.albumService.remove(id);
     if (!album) throw new NotFoundException(errorMessage.ARTIST_NOT_FOUND);
     return album;
   }

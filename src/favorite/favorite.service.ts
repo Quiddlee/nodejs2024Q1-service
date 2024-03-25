@@ -1,44 +1,92 @@
 import { Injectable } from '@nestjs/common';
 
-import { DatabaseService } from '../database/database.service';
+import exclude from '../lib/shared/exclude';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FavoriteService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
-  createTrack(id: string) {
-    return this.databaseService.favorite.track.create(id);
+  async createTrack(id: string) {
+    try {
+      return await this.prismaService.track.update({
+        where: { id },
+        data: { favoritesId: 'favs' },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  createAlbum(id: string) {
-    return this.databaseService.favorite.album.create(id);
+  async createAlbum(id: string) {
+    try {
+      return await this.prismaService.album.update({
+        where: { id },
+        data: { favoritesId: 'favs' },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  createArtist(id: string) {
-    return this.databaseService.favorite.artist.create(id);
+  async createArtist(id: string) {
+    try {
+      return await this.prismaService.artist.update({
+        where: { id },
+        data: { favoritesId: 'favs' },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  findAllTracks() {
-    return this.databaseService.favorite.track.findMany();
+  async findAll() {
+    const data = await this.prismaService.favorites.findMany({
+      where: { id: 'favs' },
+      select: { artists: true, albums: true, tracks: true },
+    });
+
+    const clearData = {
+      albums: data['0']?.albums.map((el) => exclude(el, ['favoritesId'])),
+      artists: data['0']?.artists.map((el) => exclude(el, ['favoritesId'])),
+      tracks: data['0']?.tracks.map((el) => exclude(el, ['favoritesId'])),
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return { artists: [], albums: [], tracks: [], ...clearData };
   }
 
-  findAllAlbums() {
-    return this.databaseService.favorite.album.findMany();
+  async removeTrack(id: string) {
+    try {
+      return await this.prismaService.track.update({
+        where: { id },
+        data: { favoritesId: null },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  findAllArtists() {
-    return this.databaseService.favorite.artist.findMany();
+  async removeAlbum(id: string) {
+    try {
+      return await this.prismaService.album.update({
+        where: { id },
+        data: { favoritesId: null },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
-  removeTrack(id: string) {
-    return this.databaseService.favorite.track.delete(id);
-  }
-
-  removeAlbum(id: string) {
-    return this.databaseService.favorite.album.delete(id);
-  }
-
-  removeArtist(id: string) {
-    return this.databaseService.favorite.artist.delete(id);
+  async removeArtist(id: string) {
+    try {
+      return await this.prismaService.artist.update({
+        where: { id },
+        data: { favoritesId: null },
+      });
+    } catch (e) {
+      return null;
+    }
   }
 }
