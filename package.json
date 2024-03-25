@@ -23,7 +23,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "docker:scan": "docker login && docker scout cves nodejs2024q1-service-server && docker scout cves postgres:16.2-alpine",
-    "start:migrate:dev": "npx prisma migrate dev --name init && npm run start:dev"
+    "prisma:migrate:reset": "npx prisma migrate reset --force",
+    "prisma:migrate": "npx prisma migrate dev --name init",
+    "start:migrate:dev": "npm run prisma:migrate:reset && npm run prisma:migrate && npm run start:dev"
   },
   "engines": {
     "node": "20.0.0"

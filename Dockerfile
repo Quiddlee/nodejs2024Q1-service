@@ -36,4 +36,4 @@ RUN npm i && npm i @nestjs/cli  \
 
 EXPOSE ${PORT}
 
-CMD [  "npm", "run", "start:migrate:dev" ]
+CMD [ "npm", "run", "start:migrate:dev" ]
